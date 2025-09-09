@@ -1,0 +1,13 @@
+name: CI
+on: { push: { branches: [ main ] }, pull_request: {} }
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: '21' }
+      - name: Build & Test
+        run: mvn -B -DskipTests=false clean verify
+      - name: Build Docker (no push)
+        run: docker build -t rrajo/users-service:ci .
