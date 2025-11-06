@@ -5,7 +5,6 @@ import com.portfolio.users.entity.UserStatus;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +48,6 @@ class UserRepositoryTest {
 
     private UserEntity baseUser(String email) {
         return UserEntity.builder()
-            .id(UUID.randomUUID())
             .fullName("Portfolio User")
             .email(email)
             .status(UserStatus.ACTIVE)

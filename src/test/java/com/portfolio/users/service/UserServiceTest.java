@@ -82,7 +82,6 @@ class UserServiceTest {
             .createdAt(OffsetDateTime.now())
             .build();
         when(userRepository.findById(id)).thenReturn(Optional.of(entity));
-        when(userRepository.findByEmailIgnoreCase("portfolio@test")).thenReturn(Optional.of(entity));
         when(userRepository.save(entity)).thenReturn(entity);
 
         UpdateUserRequest request = new UpdateUserRequest()
