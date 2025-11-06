@@ -1,0 +1,10 @@
+README.md
+pom.xml
+src/main/java/com/portfolio/users/generated/api/ApiUtil.java
+src/main/java/com/portfolio/users/generated/api/UsersApi.java
+src/main/java/com/portfolio/users/generated/model/CreateUserRequest.java
+src/main/java/com/portfolio/users/generated/model/UpdateUserRequest.java
+src/main/java/com/portfolio/users/generated/model/User.java
+src/main/java/com/portfolio/users/generated/model/UserExists200Response.java
+src/main/java/com/portfolio/users/generated/model/UserPage.java
+src/main/java/com/portfolio/users/generated/model/UserStatus.java

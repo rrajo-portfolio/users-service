@@ -1,0 +1,3 @@
+com\portfolio\users\repository\UserRepositoryTest.class
+com\portfolio\users\service\UserServiceTest.class
+com\portfolio\users\UsersServiceApplicationTests.class

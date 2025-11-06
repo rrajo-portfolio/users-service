@@ -1,0 +1,250 @@
+openapi: 3.0.3
+info:
+  title: Users Service API
+  version: 1.0.0
+  description: >
+    Users service exposes CRUD operations, validation utilities and scheduled maintenance endpoints.
+servers:
+  - url: http://localhost:8082/api
+tags:
+  - name: Users
+    description: People interacting with the portfolio platform.
+paths:
+  /users:
+    get:
+      tags: [Users]
+      summary: List users
+      operationId: listUsers
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            minimum: 0
+        - in: query
+          name: size
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/UserStatus'
+      responses:
+        '200':
+          description: Page of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPage'
+    post:
+      tags: [Users]
+      summary: Create user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '409':
+          description: Email already registered
+  /users/{id}:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      tags: [Users]
+      summary: Get user by id
+      operationId: getUser
+      responses:
+        '200':
+          description: Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Missing
+    put:
+      tags: [Users]
+      summary: Update user
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Missing
+    delete:
+      tags: [Users]
+      summary: Soft delete user
+      operationId: deleteUser
+      responses:
+        '204':
+          description: Deleted
+  /users/{id}/exists:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    get:
+      tags: [Users]
+      summary: Check if user exists
+      operationId: userExists
+      responses:
+        '200':
+          description: Boolean flag
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [exists]
+                properties:
+                  exists:
+                    type: boolean
+  /users/email/{email}:
+    parameters:
+      - in: path
+        name: email
+        required: true
+        schema:
+          type: string
+          format: email
+    get:
+      tags: [Users]
+      summary: Fetch user by email
+      operationId: getUserByEmail
+      responses:
+        '200':
+          description: Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Missing
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    UserId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - fullName
+        - email
+        - status
+        - createdAt
+      properties:
+        id:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+          minLength: 3
+        email:
+          type: string
+          format: email
+        phoneNumber:
+          type: string
+          pattern: '^\\+?[0-9]{7,15}$'
+        headline:
+          type: string
+          maxLength: 160
+        status:
+          $ref: '#/components/schemas/UserStatus'
+        skills:
+          type: array
+          items:
+            type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    CreateUserRequest:
+      type: object
+      required:
+        - fullName
+        - email
+      properties:
+        fullName:
+          type: string
+          minLength: 3
+        email:
+          type: string
+          format: email
+        phoneNumber:
+          type: string
+          pattern: '^\\+?[0-9]{7,15}$'
+        headline:
+          type: string
+          maxLength: 160
+        skills:
+          type: array
+          items:
+            type: string
+    UpdateUserRequest:
+      allOf:
+        - $ref: '#/components/schemas/CreateUserRequest'
+        - type: object
+          properties:
+            status:
+              $ref: '#/components/schemas/UserStatus'
+    UserStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - INACTIVE
+        - ARCHIVED
+    UserPage:
+      type: object
+      required:
+        - content
+        - page
+        - size
+        - totalElements
+        - totalPages
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
+security:
+  - bearerAuth: []

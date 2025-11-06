@@ -1,0 +1,38 @@
+server:
+  port: 8082
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: users-service
+  datasource:
+    url: jdbc:mysql://localhost:3308/usersdb
+    username: users_user
+    password: users_pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:7080/auth/realms/portfolio/protocol/openid-connect/certs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+logging:
+  level:
+    com.portfolio.users: DEBUG
+
+security:
+  oauth2:
+    expected-issuer: http://localhost:7080/auth/realms/portfolio
