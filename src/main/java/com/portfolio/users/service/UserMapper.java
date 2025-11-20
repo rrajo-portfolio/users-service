@@ -21,6 +21,7 @@ public interface UserMapper {
     @Mapping(target = "id", expression = "java(UUID.randomUUID())")
     @Mapping(target = "status", expression = "java(UserStatus.ACTIVE)")
     @Mapping(target = "createdAt", expression = "java(OffsetDateTime.now())")
+    @Mapping(target = "version", constant = "0L")
     UserEntity toEntity(CreateUserRequest request);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
