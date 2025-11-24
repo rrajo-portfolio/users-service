@@ -7,9 +7,11 @@ spring:
   application:
     name: users-service
   datasource:
-    url: jdbc:mysql://localhost:3308/usersdb
+    url: jdbc:mysql://localhost:3308/usersdb?useUnicode=true&characterEncoding=UTF-8&connectionCollation=utf8mb4_unicode_ci&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false
     username: users_user
     password: users_pass
+    hikari:
+      connection-init-sql: SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci
   jpa:
     hibernate:
       ddl-auto: update
@@ -28,6 +30,9 @@ management:
     web:
       exposure:
         include: health,info,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 logging:
   level:
