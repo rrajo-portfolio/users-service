@@ -6,6 +6,7 @@ import com.portfolio.users.exception.ConflictException;
 import com.portfolio.users.exception.ResourceNotFoundException;
 import com.portfolio.users.generated.model.CreateUserRequest;
 import com.portfolio.users.generated.model.UpdateUserRequest;
+import com.portfolio.users.generated.model.UpdateUserRolesRequest;
 import com.portfolio.users.generated.model.User;
 import com.portfolio.users.generated.model.UserPage;
 import com.portfolio.users.repository.UserRepository;
@@ -17,8 +18,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -81,6 +84,20 @@ public class UserService {
         if (request.getStatus() != null) {
             entity.setStatus(mapper.mapStatusToEntity(request.getStatus()));
         }
+        return mapper.toUser(repository.save(entity));
+    }
+
+    @Transactional
+    public User updateUserRoles(UUID id, UpdateUserRolesRequest request) {
+        UserEntity entity = findById(id);
+        List<String> normalized = request.getRoles() == null
+            ? List.of()
+            : request.getRoles().stream()
+                .filter(role -> role != null && !role.isBlank())
+                .map(String::trim)
+                .distinct()
+                .collect(Collectors.toList());
+        entity.setRoles(normalized);
         return mapper.toUser(repository.save(entity));
     }
 

@@ -6,6 +6,7 @@ import com.portfolio.users.exception.ConflictException;
 import com.portfolio.users.exception.ResourceNotFoundException;
 import com.portfolio.users.generated.model.CreateUserRequest;
 import com.portfolio.users.generated.model.UpdateUserRequest;
+import com.portfolio.users.generated.model.UpdateUserRolesRequest;
 import com.portfolio.users.generated.model.User;
 import com.portfolio.users.repository.UserRepository;
 import java.time.OffsetDateTime;
@@ -102,5 +103,29 @@ class UserServiceTest {
 
         assertThatThrownBy(() -> userService.getUser(id))
             .isInstanceOf(ResourceNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("updateUserRoles should normalize and persist roles")
+    void updateUserRolesPersistsRoles() {
+        UUID id = UUID.randomUUID();
+        UserEntity entity = UserEntity.builder()
+            .id(id)
+            .fullName("Role User")
+            .email("roles@test")
+            .status(UserStatus.ACTIVE)
+            .createdAt(OffsetDateTime.now())
+            .roles(new java.util.ArrayList<>(List.of("legacy")))
+            .build();
+        when(userRepository.findById(id)).thenReturn(Optional.of(entity));
+        when(userRepository.save(entity)).thenReturn(entity);
+
+        UpdateUserRolesRequest request = new UpdateUserRolesRequest()
+            .roles(List.of("catalog_read", "users_write", "catalog_read", "  "));
+
+        User result = userService.updateUserRoles(id, request);
+
+        assertThat(entity.getRoles()).containsExactly("catalog_read", "users_write");
+        assertThat(result.getRoles()).containsExactly("catalog_read", "users_write");
     }
 }

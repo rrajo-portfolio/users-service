@@ -12,17 +12,18 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-
-import java.time.OffsetDateTime;
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -59,6 +60,12 @@ public class UserEntity {
     @CollectionTable(name = "user_skills", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "skill", length = 80)
     private List<String> skills;
+
+    @Default
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role_name", length = 80)
+    private List<String> roles = new ArrayList<>();
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;

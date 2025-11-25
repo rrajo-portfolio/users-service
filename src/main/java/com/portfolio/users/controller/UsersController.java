@@ -3,6 +3,7 @@ package com.portfolio.users.controller;
 import com.portfolio.users.generated.api.UsersApi;
 import com.portfolio.users.generated.model.CreateUserRequest;
 import com.portfolio.users.generated.model.UpdateUserRequest;
+import com.portfolio.users.generated.model.UpdateUserRolesRequest;
 import com.portfolio.users.generated.model.User;
 import com.portfolio.users.generated.model.UserExists200Response;
 import com.portfolio.users.generated.model.UserPage;
@@ -48,6 +49,12 @@ public class UsersController implements UsersApi {
     @PreAuthorize("hasAnyAuthority('SCOPE_users.write','ROLE_users_write','ROLE_users-admin','ROLE_catalog_admin','ROLE_portfolio_admin')")
     public ResponseEntity<User> updateUser(UUID id, UpdateUserRequest updateUserRequest) {
         return ResponseEntity.ok(userService.updateUser(id, updateUserRequest));
+    }
+
+    @Override
+    @PreAuthorize("hasAnyAuthority('SCOPE_users.write','ROLE_users_write','ROLE_users-admin','ROLE_catalog_admin','ROLE_portfolio_admin')")
+    public ResponseEntity<User> updateUserRoles(UUID id, UpdateUserRolesRequest updateUserRolesRequest) {
+        return ResponseEntity.ok(userService.updateUserRoles(id, updateUserRolesRequest));
     }
 
     @Override
