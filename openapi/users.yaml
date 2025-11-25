@@ -138,6 +138,28 @@ paths:
                 $ref: '#/components/schemas/User'
         '404':
           description: Missing
+  /users/{id}/roles:
+    parameters:
+      - $ref: '#/components/parameters/UserId'
+    put:
+      tags: [Users]
+      summary: Update user roles
+      operationId: updateUserRoles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRolesRequest'
+      responses:
+        '200':
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: Missing
 components:
   securitySchemes:
     bearerAuth:
@@ -177,6 +199,11 @@ components:
         headline:
           type: string
           maxLength: 160
+        roles:
+          type: array
+          items:
+            type: string
+          example: [portfolio_admin, catalog_read]
         status:
           $ref: '#/components/schemas/UserStatus'
         skills:
@@ -211,6 +238,10 @@ components:
           type: array
           items:
             type: string
+        roles:
+          type: array
+          items:
+            type: string
     UpdateUserRequest:
       allOf:
         - $ref: '#/components/schemas/CreateUserRequest'
@@ -218,6 +249,16 @@ components:
           properties:
             status:
               $ref: '#/components/schemas/UserStatus'
+    UpdateUserRolesRequest:
+      type: object
+      required:
+        - roles
+      properties:
+        roles:
+          type: array
+          items:
+            type: string
+            minLength: 2
     UserStatus:
       type: string
       enum:
