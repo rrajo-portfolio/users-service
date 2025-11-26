@@ -8,6 +8,7 @@ package com.portfolio.users.generated.api;
 import com.portfolio.users.generated.model.CreateUserRequest;
 import java.util.UUID;
 import com.portfolio.users.generated.model.UpdateUserRequest;
+import com.portfolio.users.generated.model.UpdateUserRolesRequest;
 import com.portfolio.users.generated.model.User;
 import com.portfolio.users.generated.model.UserExists200Response;
 import com.portfolio.users.generated.model.UserPage;
@@ -38,7 +39,7 @@ import java.util.Map;
 import java.util.Optional;
 import jakarta.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-11-06T08:25:35.138267500+01:00[Europe/Madrid]", comments = "Generator version: 7.5.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-11-25T11:40:36.904905+01:00[Europe/Madrid]", comments = "Generator version: 7.5.0")
 @Validated
 @Tag(name = "Users", description = "People interacting with the portfolio platform.")
 public interface UsersApi {
@@ -81,7 +82,7 @@ public interface UsersApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }";
+                    String exampleString = "{ \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"roles\" : [ \"portfolio_admin\", \"catalog_read\" ], \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -155,7 +156,7 @@ public interface UsersApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }";
+                    String exampleString = "{ \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"roles\" : [ \"portfolio_admin\", \"catalog_read\" ], \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -199,7 +200,7 @@ public interface UsersApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }";
+                    String exampleString = "{ \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"roles\" : [ \"portfolio_admin\", \"catalog_read\" ], \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -245,7 +246,7 @@ public interface UsersApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"size\" : 6, \"totalPages\" : 5, \"page\" : 0, \"content\" : [ { \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }, { \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" } ], \"totalElements\" : 1 }";
+                    String exampleString = "{ \"size\" : 6, \"totalPages\" : 5, \"page\" : 0, \"content\" : [ { \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"roles\" : [ \"portfolio_admin\", \"catalog_read\" ], \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }, { \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"roles\" : [ \"portfolio_admin\", \"catalog_read\" ], \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" } ], \"totalElements\" : 1 }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -292,7 +293,54 @@ public interface UsersApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }";
+                    String exampleString = "{ \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"roles\" : [ \"portfolio_admin\", \"catalog_read\" ], \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * PUT /users/{id}/roles : Update user roles
+     *
+     * @param id  (required)
+     * @param updateUserRolesRequest  (required)
+     * @return Updated (status code 200)
+     *         or Missing (status code 404)
+     */
+    @Operation(
+        operationId = "updateUserRoles",
+        summary = "Update user roles",
+        tags = { "Users" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Updated", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Missing")
+        },
+        security = {
+            @SecurityRequirement(name = "bearerAuth")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.PUT,
+        value = "/users/{id}/roles",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    
+    default ResponseEntity<User> updateUserRoles(
+        @Parameter(name = "id", description = "", required = true, in = ParameterIn.PATH) @PathVariable("id") UUID id,
+        @Parameter(name = "UpdateUserRolesRequest", description = "", required = true) @Valid @RequestBody UpdateUserRolesRequest updateUserRolesRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"skills\" : [ \"skills\", \"skills\" ], \"createdAt\" : \"2000-01-23T04:56:07.000+00:00\", \"phoneNumber\" : \"phoneNumber\", \"roles\" : [ \"portfolio_admin\", \"catalog_read\" ], \"fullName\" : \"fullName\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\", \"headline\" : \"headline\", \"email\" : \"email\", \"updatedAt\" : \"2000-01-23T04:56:07.000+00:00\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

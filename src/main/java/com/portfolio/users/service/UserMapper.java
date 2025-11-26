@@ -31,11 +31,18 @@ public interface UserMapper {
     void updateEntity(UpdateUserRequest request, @MappingTarget UserEntity entity);
 
     @Mapping(target = "status", expression = "java(mapStatusToDto(entity.getStatus()))")
-    @Mapping(target = "roles", expression = "java(entity.getRoles() == null ? List.of() : entity.getRoles())")
+    @Mapping(target = "roles", expression = "java(mapRoles(entity))")
     User toUser(UserEntity entity);
 
     default UserStatus mapStatusToEntity(com.portfolio.users.generated.model.UserStatus status) {
         return status == null ? null : UserStatus.valueOf(status.getValue());
+    }
+
+    default java.util.List<String> mapRoles(UserEntity entity) {
+        if (entity.getRoles() == null) {
+            return java.util.List.of();
+        }
+        return new java.util.ArrayList<>(entity.getRoles());
     }
 
     default com.portfolio.users.generated.model.UserStatus mapStatusToDto(UserStatus status) {

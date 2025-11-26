@@ -11,11 +11,13 @@ C:\Users\Usuario\test_codex\users-service\target\generated-sources\openapi\src\m
 C:\Users\Usuario\test_codex\users-service\src\main\java\com\portfolio\users\exception\ResourceNotFoundException.java
 C:\Users\Usuario\test_codex\users-service\src\main\java\com\portfolio\users\UsersServiceApplication.java
 C:\Users\Usuario\test_codex\users-service\src\main\java\com\portfolio\users\entity\UserStatus.java
+C:\Users\Usuario\test_codex\users-service\target\generated-sources\openapi\src\main\java\com\portfolio\users\generated\model\UpdateUserRolesRequest.java
 C:\Users\Usuario\test_codex\users-service\src\main\java\com\portfolio\users\exception\ConflictException.java
 C:\Users\Usuario\test_codex\users-service\target\generated-sources\openapi\src\main\java\com\portfolio\users\generated\model\UserStatus.java
 C:\Users\Usuario\test_codex\users-service\src\main\java\com\portfolio\users\jobs\UserPurgeJob.java
 C:\Users\Usuario\test_codex\users-service\src\main\java\com\portfolio\users\service\UserMapper.java
 C:\Users\Usuario\test_codex\users-service\target\generated-sources\openapi\src\main\java\com\portfolio\users\generated\model\User.java
+C:\Users\Usuario\test_codex\users-service\src\main\java\com\portfolio\users\config\UsersDataInitializer.java
 C:\Users\Usuario\test_codex\users-service\src\main\java\com\portfolio\users\service\UserService.java
 C:\Users\Usuario\test_codex\users-service\target\generated-sources\openapi\src\main\java\com\portfolio\users\generated\model\UserPage.java
 C:\Users\Usuario\test_codex\users-service\src\main\java\com\portfolio\users\controller\UsersController.java

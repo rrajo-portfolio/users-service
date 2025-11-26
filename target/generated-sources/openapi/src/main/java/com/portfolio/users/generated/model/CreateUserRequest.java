@@ -21,7 +21,7 @@ import jakarta.annotation.Generated;
  * CreateUserRequest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-11-06T08:25:35.138267500+01:00[Europe/Madrid]", comments = "Generator version: 7.5.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-11-25T11:40:36.904905+01:00[Europe/Madrid]", comments = "Generator version: 7.5.0")
 public class CreateUserRequest {
 
   private String fullName;
@@ -34,6 +34,9 @@ public class CreateUserRequest {
 
   @Valid
   private List<String> skills = new ArrayList<>();
+
+  @Valid
+  private List<String> roles = new ArrayList<>();
 
   public CreateUserRequest() {
     super();
@@ -155,6 +158,34 @@ public class CreateUserRequest {
     this.skills = skills;
   }
 
+  public CreateUserRequest roles(List<String> roles) {
+    this.roles = roles;
+    return this;
+  }
+
+  public CreateUserRequest addRolesItem(String rolesItem) {
+    if (this.roles == null) {
+      this.roles = new ArrayList<>();
+    }
+    this.roles.add(rolesItem);
+    return this;
+  }
+
+  /**
+   * Get roles
+   * @return roles
+  */
+  
+  @Schema(name = "roles", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("roles")
+  public List<String> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(List<String> roles) {
+    this.roles = roles;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -168,12 +199,13 @@ public class CreateUserRequest {
         Objects.equals(this.email, createUserRequest.email) &&
         Objects.equals(this.phoneNumber, createUserRequest.phoneNumber) &&
         Objects.equals(this.headline, createUserRequest.headline) &&
-        Objects.equals(this.skills, createUserRequest.skills);
+        Objects.equals(this.skills, createUserRequest.skills) &&
+        Objects.equals(this.roles, createUserRequest.roles);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fullName, email, phoneNumber, headline, skills);
+    return Objects.hash(fullName, email, phoneNumber, headline, skills, roles);
   }
 
   @Override
@@ -185,6 +217,7 @@ public class CreateUserRequest {
     sb.append("    phoneNumber: ").append(toIndentedString(phoneNumber)).append("\n");
     sb.append("    headline: ").append(toIndentedString(headline)).append("\n");
     sb.append("    skills: ").append(toIndentedString(skills)).append("\n");
+    sb.append("    roles: ").append(toIndentedString(roles)).append("\n");
     sb.append("}");
     return sb.toString();
   }

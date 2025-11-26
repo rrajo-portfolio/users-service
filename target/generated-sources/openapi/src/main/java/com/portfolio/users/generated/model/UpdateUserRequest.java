@@ -23,7 +23,7 @@ import jakarta.annotation.Generated;
  * UpdateUserRequest
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-11-06T08:25:35.138267500+01:00[Europe/Madrid]", comments = "Generator version: 7.5.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-11-25T11:40:36.904905+01:00[Europe/Madrid]", comments = "Generator version: 7.5.0")
 public class UpdateUserRequest {
 
   private String fullName;
@@ -36,6 +36,9 @@ public class UpdateUserRequest {
 
   @Valid
   private List<String> skills = new ArrayList<>();
+
+  @Valid
+  private List<String> roles = new ArrayList<>();
 
   private UserStatus status;
 
@@ -159,6 +162,34 @@ public class UpdateUserRequest {
     this.skills = skills;
   }
 
+  public UpdateUserRequest roles(List<String> roles) {
+    this.roles = roles;
+    return this;
+  }
+
+  public UpdateUserRequest addRolesItem(String rolesItem) {
+    if (this.roles == null) {
+      this.roles = new ArrayList<>();
+    }
+    this.roles.add(rolesItem);
+    return this;
+  }
+
+  /**
+   * Get roles
+   * @return roles
+  */
+  
+  @Schema(name = "roles", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("roles")
+  public List<String> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(List<String> roles) {
+    this.roles = roles;
+  }
+
   public UpdateUserRequest status(UserStatus status) {
     this.status = status;
     return this;
@@ -193,12 +224,13 @@ public class UpdateUserRequest {
         Objects.equals(this.phoneNumber, updateUserRequest.phoneNumber) &&
         Objects.equals(this.headline, updateUserRequest.headline) &&
         Objects.equals(this.skills, updateUserRequest.skills) &&
+        Objects.equals(this.roles, updateUserRequest.roles) &&
         Objects.equals(this.status, updateUserRequest.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fullName, email, phoneNumber, headline, skills, status);
+    return Objects.hash(fullName, email, phoneNumber, headline, skills, roles, status);
   }
 
   @Override
@@ -210,6 +242,7 @@ public class UpdateUserRequest {
     sb.append("    phoneNumber: ").append(toIndentedString(phoneNumber)).append("\n");
     sb.append("    headline: ").append(toIndentedString(headline)).append("\n");
     sb.append("    skills: ").append(toIndentedString(skills)).append("\n");
+    sb.append("    roles: ").append(toIndentedString(roles)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();

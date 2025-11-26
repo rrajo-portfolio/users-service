@@ -9,12 +9,13 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-11-06T08:25:37+0100",
+    date = "2025-11-25T11:40:39+0100",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.8 (Oracle Corporation)"
 )
 @Component
@@ -32,14 +33,13 @@ public class UserMapperImpl implements UserMapper {
         userEntity.email( request.getEmail() );
         userEntity.phoneNumber( request.getPhoneNumber() );
         userEntity.headline( request.getHeadline() );
-        List<String> list = request.getSkills();
-        if ( list != null ) {
-            userEntity.skills( new ArrayList<String>( list ) );
-        }
+        userEntity.skills( normalizeRoles( request.getSkills() ) );
 
         userEntity.id( UUID.randomUUID() );
         userEntity.status( UserStatus.ACTIVE );
         userEntity.createdAt( OffsetDateTime.now() );
+        userEntity.version( (long) 0L );
+        userEntity.roles( normalizeRoles(request.getRoles()) );
 
         return userEntity.build();
     }
@@ -63,16 +63,16 @@ public class UserMapperImpl implements UserMapper {
             entity.setHeadline( request.getHeadline() );
         }
         if ( entity.getSkills() != null ) {
-            List<String> list = request.getSkills();
+            List<String> list = normalizeRoles( request.getSkills() );
             if ( list != null ) {
                 entity.getSkills().clear();
                 entity.getSkills().addAll( list );
             }
         }
         else {
-            List<String> list = request.getSkills();
+            List<String> list = normalizeRoles( request.getSkills() );
             if ( list != null ) {
-                entity.setSkills( new ArrayList<String>( list ) );
+                entity.setSkills( list );
             }
         }
 
@@ -92,14 +92,12 @@ public class UserMapperImpl implements UserMapper {
         user.setEmail( entity.getEmail() );
         user.setPhoneNumber( entity.getPhoneNumber() );
         user.setHeadline( entity.getHeadline() );
-        List<String> list = entity.getSkills();
-        if ( list != null ) {
-            user.setSkills( new ArrayList<String>( list ) );
-        }
+        user.setSkills( normalizeRoles( entity.getSkills() ) );
         user.setCreatedAt( entity.getCreatedAt() );
         user.setUpdatedAt( entity.getUpdatedAt() );
 
         user.setStatus( mapStatusToDto(entity.getStatus()) );
+        user.setRoles( entity.getRoles() == null ? List.of() : entity.getRoles() );
 
         return user;
     }

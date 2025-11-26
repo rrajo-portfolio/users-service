@@ -26,7 +26,7 @@ import jakarta.annotation.Generated;
  * User
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-11-06T08:25:35.138267500+01:00[Europe/Madrid]", comments = "Generator version: 7.5.0")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2025-11-25T11:40:36.904905+01:00[Europe/Madrid]", comments = "Generator version: 7.5.0")
 public class User {
 
   private UUID id;
@@ -38,6 +38,9 @@ public class User {
   private String phoneNumber;
 
   private String headline;
+
+  @Valid
+  private List<String> roles = new ArrayList<>();
 
   private UserStatus status;
 
@@ -165,6 +168,34 @@ public class User {
     this.headline = headline;
   }
 
+  public User roles(List<String> roles) {
+    this.roles = roles;
+    return this;
+  }
+
+  public User addRolesItem(String rolesItem) {
+    if (this.roles == null) {
+      this.roles = new ArrayList<>();
+    }
+    this.roles.add(rolesItem);
+    return this;
+  }
+
+  /**
+   * Get roles
+   * @return roles
+  */
+  
+  @Schema(name = "roles", example = "[\"portfolio_admin\",\"catalog_read\"]", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("roles")
+  public List<String> getRoles() {
+    return roles;
+  }
+
+  public void setRoles(List<String> roles) {
+    this.roles = roles;
+  }
+
   public User status(UserStatus status) {
     this.status = status;
     return this;
@@ -267,6 +298,7 @@ public class User {
         Objects.equals(this.email, user.email) &&
         Objects.equals(this.phoneNumber, user.phoneNumber) &&
         Objects.equals(this.headline, user.headline) &&
+        Objects.equals(this.roles, user.roles) &&
         Objects.equals(this.status, user.status) &&
         Objects.equals(this.skills, user.skills) &&
         Objects.equals(this.createdAt, user.createdAt) &&
@@ -275,7 +307,7 @@ public class User {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, fullName, email, phoneNumber, headline, status, skills, createdAt, updatedAt);
+    return Objects.hash(id, fullName, email, phoneNumber, headline, roles, status, skills, createdAt, updatedAt);
   }
 
   @Override
@@ -287,6 +319,7 @@ public class User {
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    phoneNumber: ").append(toIndentedString(phoneNumber)).append("\n");
     sb.append("    headline: ").append(toIndentedString(headline)).append("\n");
+    sb.append("    roles: ").append(toIndentedString(roles)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    skills: ").append(toIndentedString(skills)).append("\n");
     sb.append("    createdAt: ").append(toIndentedString(createdAt)).append("\n");
