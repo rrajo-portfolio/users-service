@@ -69,6 +69,7 @@ public class UsersDataInitializer {
                 .build()
         );
 
+        demoUsers.forEach(user -> user.setVersion(0L));
         userRepository.saveAll(demoUsers);
         log.info("Seeded {} demo users for governance showcase", demoUsers.size());
     }
