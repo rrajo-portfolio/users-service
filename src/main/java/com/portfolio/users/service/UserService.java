@@ -53,8 +53,10 @@ public class UserService {
 
     @Transactional
     public User createUser(CreateUserRequest request) {
-        repository.findByEmailIgnoreCase(request.getEmail())
-            .ifPresent(existing -> { throw new ConflictException("Email already registered: " + existing.getEmail()); });
+        Optional<UserEntity> existing = repository.findByEmailIgnoreCase(request.getEmail());
+        if (existing.isPresent()) {
+            return mapper.toUser(existing.get());
+        }
         UserEntity entity = mapper.toEntity(request);
         return mapper.toUser(repository.save(entity));
     }

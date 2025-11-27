@@ -2,7 +2,6 @@ package com.portfolio.users.service;
 
 import com.portfolio.users.entity.UserEntity;
 import com.portfolio.users.entity.UserStatus;
-import com.portfolio.users.exception.ConflictException;
 import com.portfolio.users.exception.ResourceNotFoundException;
 import com.portfolio.users.generated.model.CreateUserRequest;
 import com.portfolio.users.generated.model.UpdateUserRequest;
@@ -25,6 +24,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,13 +63,24 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("createUser should throw when email already exists")
-    void createUserDuplicateEmailThrows() {
-        CreateUserRequest request = new CreateUserRequest().email("duplicate@test");
-        when(userRepository.findByEmailIgnoreCase("duplicate@test")).thenReturn(Optional.of(new UserEntity()));
+    @DisplayName("createUser should return existing user when email already exists")
+    void createUserDuplicateEmailReturnsExisting() {
+        CreateUserRequest request = new CreateUserRequest()
+            .fullName("Existing User")
+            .email("duplicate@test");
+        UserEntity existing = UserEntity.builder()
+            .id(UUID.randomUUID())
+            .fullName("Existing User")
+            .email("duplicate@test")
+            .status(UserStatus.ACTIVE)
+            .createdAt(OffsetDateTime.now())
+            .build();
+        when(userRepository.findByEmailIgnoreCase("duplicate@test")).thenReturn(Optional.of(existing));
 
-        assertThatThrownBy(() -> userService.createUser(request))
-            .isInstanceOf(ConflictException.class);
+        User result = userService.createUser(request);
+
+        assertThat(result.getEmail()).isEqualTo("duplicate@test");
+        verify(userRepository, never()).save(any(UserEntity.class));
     }
 
     @Test
