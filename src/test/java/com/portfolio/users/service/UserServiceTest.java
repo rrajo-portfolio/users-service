@@ -7,6 +7,7 @@ import com.portfolio.users.generated.model.CreateUserRequest;
 import com.portfolio.users.generated.model.UpdateUserRequest;
 import com.portfolio.users.generated.model.UpdateUserRolesRequest;
 import com.portfolio.users.generated.model.User;
+import com.portfolio.users.generated.model.UserPage;
 import com.portfolio.users.repository.UserRepository;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,9 +18,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -139,5 +146,85 @@ class UserServiceTest {
 
         assertThat(entity.getRoles()).containsExactly("catalog_read", "users_write");
         assertThat(result.getRoles()).containsExactly("catalog_read", "users_write");
+    }
+
+    @Test
+    @DisplayName("listUsers without status uses default pagination and maps content")
+    void listUsersDefaultsPagination() {
+        UserEntity entity = sampleEntity(UserStatus.ACTIVE);
+        Page<UserEntity> page = new PageImpl<>(
+            List.of(entity),
+            PageRequest.of(0, 20),
+            1
+        );
+        when(userRepository.findAll(org.mockito.ArgumentMatchers.any(Pageable.class))).thenReturn(page);
+
+        UserPage result = userService.listUsers(null, null, null);
+
+        assertThat(result.getContent()).hasSize(1);
+        ArgumentCaptor<Pageable> pageableCaptor = ArgumentCaptor.forClass(Pageable.class);
+        verify(userRepository).findAll(pageableCaptor.capture());
+        Pageable usedPageable = pageableCaptor.getValue();
+        assertThat(usedPageable.getPageNumber()).isZero();
+        assertThat(usedPageable.getPageSize()).isEqualTo(20);
+    }
+
+    @Test
+    @DisplayName("listUsers with status applies specification filter")
+    void listUsersAppliesStatusFilter() {
+        UserEntity entity = sampleEntity(UserStatus.INACTIVE);
+        Page<UserEntity> page = new PageImpl<>(List.of(entity));
+        when(userRepository.findAll(org.mockito.ArgumentMatchers.<Specification<UserEntity>>any(), org.mockito.ArgumentMatchers.any(Pageable.class)))
+            .thenReturn(page);
+
+        UserPage result = userService.listUsers(1, 5, "INACTIVE");
+
+        assertThat(result.getContent()).hasSize(1);
+        verify(userRepository).findAll(org.mockito.ArgumentMatchers.<Specification<UserEntity>>any(), org.mockito.ArgumentMatchers.any(Pageable.class));
+    }
+
+    @Test
+    @DisplayName("getUserByEmail should return mapped DTO")
+    void getUserByEmailReturnsDto() {
+        UserEntity entity = sampleEntity(UserStatus.ACTIVE);
+        when(userRepository.findByEmailIgnoreCase("portfolio@test")).thenReturn(Optional.of(entity));
+
+        User result = userService.getUserByEmail("portfolio@test");
+
+        assertThat(result.getEmail()).isEqualTo("portfolio@test");
+    }
+
+    @Test
+    @DisplayName("delete should mark user as archived")
+    void deleteMarksUserArchived() {
+        UserEntity entity = sampleEntity(UserStatus.ACTIVE);
+        when(userRepository.findById(entity.getId())).thenReturn(Optional.of(entity));
+        when(userRepository.save(entity)).thenReturn(entity);
+
+        userService.delete(entity.getId());
+
+        assertThat(entity.getStatus()).isEqualTo(UserStatus.ARCHIVED);
+        verify(userRepository).save(entity);
+    }
+
+    @Test
+    @DisplayName("exists delegates to repository")
+    void existsDelegatesToRepository() {
+        UUID id = UUID.randomUUID();
+        when(userRepository.existsById(id)).thenReturn(true);
+
+        assertThat(userService.exists(id)).isTrue();
+        verify(userRepository).existsById(id);
+    }
+
+    private UserEntity sampleEntity(UserStatus status) {
+        return UserEntity.builder()
+            .id(UUID.randomUUID())
+            .fullName("Tester")
+            .email("portfolio@test")
+            .status(status)
+            .roles(new java.util.ArrayList<>(List.of("catalog_read")))
+            .createdAt(OffsetDateTime.now())
+            .build();
     }
 }
