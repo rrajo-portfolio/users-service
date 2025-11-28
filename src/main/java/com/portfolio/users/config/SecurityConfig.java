@@ -29,6 +29,15 @@ import java.util.Set;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private static final String[] SWAGGER_WHITELIST = {
+        "/swagger-ui.html",
+        "/swagger-ui/**",
+        "/v3/api-docs/**",
+        "/api/swagger-ui.html",
+        "/api/swagger-ui/**",
+        "/api/v3/api-docs/**"
+    };
+
     @Value("${security.oauth2.jwk-set-uri:http://localhost:7080/auth/realms/portfolio/protocol/openid-connect/certs}")
     private String jwkSetUri;
 
@@ -49,6 +58,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                 .requestMatchers("/actuator/**", "/api/actuator/**").permitAll()
+                .requestMatchers(SWAGGER_WHITELIST).permitAll()
                 .anyRequest().authenticated()
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt
