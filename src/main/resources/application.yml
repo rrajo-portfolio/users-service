@@ -41,3 +41,10 @@ logging:
 security:
   oauth2:
     expected-issuer: http://localhost:7080/auth/realms/portfolio
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+  api-docs:
+    path: /v3/api-docs
