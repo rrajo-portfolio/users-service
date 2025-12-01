@@ -9,6 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -32,6 +33,7 @@ import java.util.stream.Stream;
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    private static final String ROLE_PREFIX = "ROLE_";
     private static final String[] SWAGGER_WHITELIST = {
         "/swagger-ui.html",
         "/swagger-ui/**",
@@ -54,10 +56,10 @@ public class SecurityConfig {
     @Order(1)
     public SecurityFilterChain swaggerSecurityFilterChain(HttpSecurity http) throws Exception {
         http.securityMatchers(matchers -> matchers.requestMatchers(SWAGGER_REQUEST_MATCHERS))
-            .csrf(csrf -> csrf.disable())
+            .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-            .securityContext(securityContext -> securityContext.disable())
-            .sessionManagement(session -> session.disable());
+            .securityContext(AbstractHttpConfigurer::disable)
+            .sessionManagement(AbstractHttpConfigurer::disable);
         return http.build();
     }
 
@@ -125,7 +127,7 @@ public class SecurityConfig {
         }
         return roleCollection.stream()
             .map(Object::toString)
-            .map(role -> role.startsWith("ROLE_") ? role : "ROLE_" + role)
+            .map(role -> role.startsWith(ROLE_PREFIX) ? role : ROLE_PREFIX + role)
             .map(SimpleGrantedAuthority::new)
             .collect(HashSet::new, Set::add, Set::addAll);
     }
@@ -143,7 +145,7 @@ public class SecurityConfig {
                 if (roles instanceof Collection<?> roleCollection) {
                     roleCollection.stream()
                         .map(Object::toString)
-                        .map(role -> role.startsWith("ROLE_") ? role : "ROLE_" + role)
+                        .map(role -> role.startsWith(ROLE_PREFIX) ? role : ROLE_PREFIX + role)
                         .map(SimpleGrantedAuthority::new)
                         .forEach(authorities::add);
                 }
